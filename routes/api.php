@@ -16,7 +16,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/products',function () {
    return response('hello');
 });
+//
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('/products',function () {
+        return response('hello');
+    });
 });
