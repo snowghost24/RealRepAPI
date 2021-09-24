@@ -1,8 +1,11 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
+use App\Events\Comment;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +23,8 @@ Route::get('/products',function () {
 
 Route::post('/register',[UserController::class,'register']);
 Route::post('/login',[UserController::class,'login']);
+Route::post('/send_comment',[CommentController::class,'comment']);
+
 //
 //Route::middleware('auth:api')->get('/user', function (Request $request) {
 //    return $request->user();

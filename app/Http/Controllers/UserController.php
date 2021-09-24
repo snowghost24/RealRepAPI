@@ -71,7 +71,12 @@ class UserController extends Controller
             ]);
         }
 
-        return $user->createToken($request->device_name)->plainTextToken;
+       $response = [
+            'user' => $user,
+            'token' => $user->createToken($request->device_name)->plainTextToken
+        ];
+
+        return response($response, 201);
     }
 
     public function logout(Request $request)
