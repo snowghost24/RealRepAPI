@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\AvatarController;
+use App\Http\Controllers\ImageController;
+use App\Http\Controllers\PasswordResetController;
+use App\Http\Controllers\PasswordResetLinkController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -23,35 +27,42 @@ use Laravel\Socialite\Facades\Socialite;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-//Route::get('/test_log',function (){
-// $response  =  Socialite::driver('google')->userFromToken('ya29.a0ARrdaM89_Fodi2mArEwoSmUC2eHO0euNzhAeHjZniPMBKshMpElWBb2T-IWWoSHrO7nQLcSFckwaMTEeXSi_a2cHIIhLuzUlLrRWvaXxLSYEmqnac1ccAHEnbYnSdgVSqdRTwUBy5Bp3qeApqQrb7Bfr_xl1');
-//    dd($response);
-//});
 
 Route::get('/products',function () {
    return response('hello');
 });
 
-//Route::get('/test_log',function (){
-//    try {
-//        $so  =  Socialite::driver('google')->userFromToken('ya29.a0ARrdaM_DfbXrjtnXfzC3rdGhYV0Oxz_PceHaRQh81FQrNbqUD9rLJ4enRETd6o0OYor1wgVKIoHMfAYG33Ashls1nyAG5_SIu0dH-GD0hQBV-eoZ-E04ZeFKQcOhGczxrbQvvYoTY9VqUZ1jD74-5FpAjtys');
-//        dd($so);
-//    }catch (Exception $e){
-//        dd($e);
+
+
+//Route::post('/avatar',function (Request $request){
+//
+//    if ($request->hasFile('image')) {
+//
+//        $path = $request->file('image')->store('images');
+//        return $path;
+//
 //    }
+////    $attributes = $request->validate([
+////        'avatar' => 'required|image:jpeg,png,jpg,gif,svg|max:6048'
+////    ]);
+//
+//        //    $attributes;
+//// return $request->all();
+////    if ($request->file('avatar')->isValid()) {
+////        return 'isvalid';
+////    } else {
+////        'is not valid';
+////    }
 //
 //});
+
 Route::post('/check_auth',[UserController::class,'checkAuth']);
+Route::post('/forgot-password',[PasswordResetLinkController::class,'store'])->name('password.email');;
 Route::post('/register',[UserController::class,'register']);
 Route::post('/login',[UserController::class,'login']);
 //Route::post('/send_comment',[CommentController::class,'comment']);
 // fetch all the news articles
-Route::get('/news_articles',[NewsArticleController::class,'index']);
 
-// fetch all the comments associated with this article
-Route::get('/news_articles/{news_article}/comments', function (NewsArticle $news_article) {
-    return $news_article->comments;
-});
 
 Route::post('/news_articles/{news_article}/comment', function (Request $request, NewsArticle $news_article) {
     $comment = new \Laravelista\Comments\Comment;
@@ -84,7 +95,18 @@ Route::post('/comments/{comment}', 'CommentsCenter\CommentController@reply');
 //    return $request->user();
 //});
 
+//Route::post('/avatar',function (){
+//    return 'wtf';
+//});
+
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('/news_articles',[NewsArticleController::class,'index']);
+    Route::post('/avatar',AvatarController::class);
+
+// fetch all the comments associated with this article
+    Route::get('/news_articles/{news_article}/comments', function (NewsArticle $news_article) {
+        return $news_article->comments;
+    });
     Route::post('/logout',[UserController::class,'logout']);
     Route::get('/products',function () {
         return response('hello');
@@ -94,3 +116,4 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 //    Route::put('comments/{comment}', 'CommentsCenter\CommentController@update');
 //    Route::post('comments/{comment}', 'CommentsCenter\CommentController@reply');
 });
+

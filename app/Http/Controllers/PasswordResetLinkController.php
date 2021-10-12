@@ -5,8 +5,20 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 
-class PasswordResetController extends Controller
+class PasswordResetLinkController extends Controller
 {
+
+
+    /**
+     * for web
+     * Display the password reset link request view.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function create()
+    {
+        return view('auth.forgot-password');
+    }
 
     /**
      * Handle an incoming password reset link request.
@@ -17,22 +29,20 @@ class PasswordResetController extends Controller
      * @throws \Illuminate\Validation\ValidationException
      */
 
-    public function resetPassword(Request $request)
+    public function store(Request $request)
     {
 
         $request->validate(['email' => 'required']);
 
-       $status = Password::sendResetLink(
+        $status = Password::sendResetLink(
             $request->only('email')
         );
 
-//       return 'hello';
-
         return response()->json([
-                'success' => $status == Password::RESET_LINK_SENT,
-                'status' => $status,
-                'pwd' => Password::RESET_LINK_SENT,
-            ]);
+            'success' => $status == Password::RESET_LINK_SENT,
+            'status' => $status,
+            'pwd' => Password::RESET_LINK_SENT,
+        ]);
 
 
         // for web

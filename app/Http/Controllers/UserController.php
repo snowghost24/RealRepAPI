@@ -37,10 +37,19 @@ class UserController extends Controller
             'password' =>'required|string|confirmed'
         ]);
 
+        // check to see if the user has a gravatar and save the image link
+        $gravatar =  new GravatarController;
+
+        if ( $url = $gravatar->getGravatar($fields['email'])){
+            $fields['avatar'] = $url;
+        }
+
+
         $user = User::create([
             'name'     => $fields['name'],
             'username'     => $fields['username'],
             'email'    => $fields['email'],
+            'avatar' => $fields['avatar'],
             'password' => bcrypt($fields['password'])
         ]);
 
