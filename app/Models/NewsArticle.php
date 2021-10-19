@@ -8,5 +8,11 @@ use Laravelista\Comments\Commentable;
 
 class NewsArticle extends Model
 {
-    use HasFactory, Commentable;
+    use HasFactory;
+
+    public function comment(){
+        return $this->morphMany(Comment::class, 'commentable');
+    }
+
+
 }

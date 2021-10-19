@@ -28,12 +28,16 @@ use Illuminate\Support\Facades\Route;
 //
 //Route::post('/login', [AuthenticatedSessionController::class, 'store'])
 //                ->middleware('guest');
-//
+
 //Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
 //                ->middleware('auth')
 //                 ->name('logout');
 //
-
+Route::get('/login', function (){
+    return view();
+});
+//    ->middleware('guest')
+//    ->name('password.request');
 
 Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])
                 ->middleware('guest')

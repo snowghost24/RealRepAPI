@@ -11,10 +11,9 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
 use App\Events\Comment;
 use App\Http\Controllers\UserController;
-//use App\Http\Controllers\CommentController;
 use App\Http\Controllers\NewsArticleController;
 use App\Models\NewsArticle;
-use \App\Http\Controllers\CommentsController as CommentsCenter;
+use \App\Http\Controllers\CommentsController;
 use Laravel\Socialite\Facades\Socialite;
 
 /*
@@ -31,6 +30,7 @@ use Laravel\Socialite\Facades\Socialite;
 Route::get('/products',function () {
    return response('hello');
 });
+
 
 
 
@@ -77,7 +77,6 @@ Route::post('/news_articles/{news_article}/comment', function (Request $request,
 
 
 
-Route::post('/comments', 'CommentsCenter\CommentController@store');
 Route::delete('/comments/{comment}', 'CommentsCenter\CommentController@destroy');
 Route::put('/comments/{comment}', 'CommentsCenter\CommentController@update');
 Route::post('/comments/{comment}', 'CommentsCenter\CommentController@reply');
@@ -98,10 +97,12 @@ Route::post('/comments/{comment}', 'CommentsCenter\CommentController@reply');
 //Route::post('/avatar',function (){
 //    return 'wtf';
 //});
+Route::post('/comments/{commentable_type}/{commentable_id}', [ CommentsController::class, 'index' ]);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/news_articles',[NewsArticleController::class,'index']);
     Route::post('/avatar',AvatarController::class);
+    Route::post('/comments', [ CommentsController::class, 'store' ]);
 
 // fetch all the comments associated with this article
     Route::get('/news_articles/{news_article}/comments', function (NewsArticle $news_article) {
